@@ -1,1 +1,3 @@
-# api_seminario_software
+# BASE API SEMINARIO TALLER DE SOFTWARE
+## COMANDOS UTILIZADOS:
+npm init --y
