@@ -1,3 +1,3 @@
 # BASE API SEMINARIO TALLER DE SOFTWARE
 ## COMANDOS UTILIZADOS:
-npm init --y
+```npm init --y```
