@@ -2,15 +2,26 @@ const express = require('express');
 const morgan = require('morgan');
 const db = require('./configuracion/db');
 const modeloCargo = require('./modelos/cargo');
+const modeloEmpleado = require('./modelos/empleado');
 
 db.authenticate()
 .then( async (data) => {
     console.log("Conexion establecida");
+    modeloCargo.hasMany(modeloEmpleado);
+    modeloEmpleado.belongsTo(modeloCargo);
+    // CREANDO MODELO CARGO
     await modeloCargo.sync().then((da) => {
         console.log("Modelo Cargo Creado Correctamente")
     })
     .catch((e) => {
         console.log("Error al crear el modelo cargo " + e);
+    })
+    // CREANDO MODELO EMPLEADO
+    await modeloEmpleado.sync().then((da) => {
+        console.log("Modelo Empleado Creado Correctamente")
+    })
+    .catch((e) => {
+        console.log("Error al crear el modelo empleado " + e);
     })
 })
 .catch((er) => {
