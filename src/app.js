@@ -115,6 +115,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use('/api', require('./rutas')); //usando archivo aparte que se encarga solo de las rutas
+app.use('/api/cargos', require('./rutas/rutaCargo'));
 
 app.listen(app.get('port'), ()=>{
     console.log('Servidor iniciado en el puerto ' + app.get('port'));
