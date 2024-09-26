@@ -1,5 +1,5 @@
 const sequelize = require('sequelize');
-const db = require('../configuracion/db');
+const db = require('../../configuracion/db');
 
 const ClienteDireccion = db.define(
     "clientedireccion",
