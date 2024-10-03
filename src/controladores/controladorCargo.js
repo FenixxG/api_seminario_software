@@ -32,3 +32,26 @@ exports.listar = async(req, res) => {
         enviar(500, contenido, res);
     }
 };
+
+// FUNCION PARA ALMACENAR DATOS
+exports.guardar = async(req, res) => {
+    const { nombre } = req.body;
+    var contenido = {
+        tipo: 0,
+        datos: [],
+        msj: [],
+    }
+    contenido.msj = errores(validationResult(req));
+    console.log(contenido.msj);
+    try {
+        contenido.tipo = 1;
+        contenido.datos = "Hola";
+        enviar(200, contenido, res);
+
+    } catch (error) {
+        // ERROR ANTES DE EJECUTAR EL MODELO
+        contenido.tipo = 0;
+        contenido.msj = "ERROR EN EL SERVIDOR";
+        enviar(500, contenido, res);
+    }
+};
