@@ -1,4 +1,4 @@
-const ModeloCargo = require('../modelos/cargo');
+const ModeloMunicipio = require('../modelos/ubicacion/municipio');
 const { enviar, errores} = require('../configuracion/ayuda');
 const { validationResult } = require('express-validator');
 
@@ -14,7 +14,7 @@ exports.listar = async(req, res) => {
         msj: [],
     }
     try {
-        await ModeloCargo.findAll()
+        await ModeloMunicipio.findAll()
         .then(((data)=>{
             contenido.tipo = 1;
             contenido.datos = data;
@@ -22,7 +22,7 @@ exports.listar = async(req, res) => {
         }))
         .catch((er) => {
             contenido.tipo = 0;
-            contenido.msj = "ERROR AL CARGAR LOS DATOS DEL CARGO";
+            contenido.msj = "ERROR AL CARGAR LOS DATOS DEL MUNICIPIO";
             enviar(200, contenido, res);
         })
     } catch (error) {
@@ -47,7 +47,7 @@ exports.guardar = async(req, res) => {
     }
     else{
         try {
-            await ModeloCargo.create({...req.body}) // CON ... SE PASAN TODOS LOS DATOS DEL REQ.BODY
+            await ModeloMunicipio.create({...req.body}) // CON ... SE PASAN TODOS LOS DATOS DEL REQ.BODY
             .then((data)=>{
                 contenido.tipo = 1;
                 contenido.datos = data;
@@ -82,7 +82,7 @@ exports.editar = async(req, res) => {
     }
     else{
         try {
-            await ModeloCargo.update(
+            await ModeloMunicipio.update(
                 ({...req.body}),
                 {where: {id: id}})
             .then((data)=>{
@@ -119,7 +119,7 @@ exports.eliminar = async(req, res) => {
     }
     else{
         try {
-            await ModeloCargo.destroy({where: {id: id}})
+            await ModeloMunicipio.destroy({where: {id: id}})
             .then((data)=>{
                 contenido.tipo = 1;
                 contenido.datos = data;

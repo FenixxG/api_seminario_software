@@ -3,8 +3,8 @@ const morgan = require('morgan');
 const db = require('./configuracion/db');
 const modeloCargo = require('./modelos/cargo');
 const modeloEmpleado = require('./modelos/empleado');
-const modeloDepartamento = require('./modelos/ubicacion/departamento');
 // MODELOS DE UBICACION
+const modeloDepartamento = require('./modelos/ubicacion/departamento');
 const modeloMunicipio = require('./modelos/ubicacion/municipio');
 const modeloCiudad = require('./modelos/ubicacion/ciudad');
 const modeloBarrio = require('./modelos/ubicacion/barrio');
@@ -116,6 +116,14 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use('/api', require('./rutas')); //usando archivo aparte que se encarga solo de las rutas
 app.use('/api/cargos', require('./rutas/rutaCargo'));
+app.use('/api/empleados', require('./rutas/rutaEmpleado'));
+app.use('/api/departamentos', require('./rutas/rutaDepartamentos'));
+app.use('/api/municipios', require('./rutas/rutaMunicipio'));
+app.use('/api/ciudades', require('./rutas/rutaCiudad'));
+app.use('/api/barrios', require('./rutas/rutaBarrio'));
+app.use('/api/clientes', require('./rutas/rutaCliente'));
+app.use('/api/clientedirecciones', require('./rutas/rutaClienteDireccion'));
+app.use('/api/clientetelefonos', require('./rutas/rutaClienteTelefono'));
 
 app.listen(app.get('port'), ()=>{
     console.log('Servidor iniciado en el puerto ' + app.get('port'));
