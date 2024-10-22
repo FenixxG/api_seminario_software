@@ -1,6 +1,18 @@
 const express = require('express');
 const morgan = require('morgan');
-const db = require('./configuracion/db');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const cors = require('cors');
+// Carga las variables de entorno
+require('dotenv').config();
+// Rutas
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./documentacion/swagger');
+const rutasClientes = require('./rutas/rutaCliente');
+// Tablas
+const db = require('./configuraciones/db');
+const { CrearModelos } = require('./modelos');
+/*
 const modeloCargo = require('./modelos/cargo');
 const modeloEmpleado = require('./modelos/empleado');
 // MODELOS DE UBICACION
@@ -12,6 +24,7 @@ const modeloBarrio = require('./modelos/ubicacion/barrio');
 const modeloCliente = require('./modelos/cliente/cliente');
 const modeloClienteDireccion = require('./modelos/cliente/clientedireccion');
 const modeloClienteTelefono = require('./modelos/cliente/clientetelefono');
+*/
 
 db.authenticate()
 .then( async (data) => {
@@ -109,11 +122,23 @@ db.authenticate()
     console.log("ERROR: " + er);
 });
 
+const limitador = rateLimit({
+    windowMs: 1000 * 60 * 10, // 10 minutos
+    max: 100, // Maximo de peticiones
+});
+
 const app = express();
-app.set('port', 3001);
+// Middlewares
 app.use(morgan('dev'));
-app.use(express.urlencoded({extended: false}));
+app.use(helmet());
+app.use(limitador);
+app.use(cors(require('./configuraciones/cors')));
 app.use(express.json());
+
+app.set('port', 3001);
+app.use(express.urlencoded({extended: false}));
+
+// Definimos Rutas
 app.use('/api', require('./rutas')); //usando archivo aparte que se encarga solo de las rutas
 app.use('/api/cargos', require('./rutas/rutaCargo'));
 app.use('/api/empleados', require('./rutas/rutaEmpleado'));
@@ -124,6 +149,13 @@ app.use('/api/barrios', require('./rutas/rutaBarrio'));
 app.use('/api/clientes', require('./rutas/rutaCliente'));
 app.use('/api/clientedirecciones', require('./rutas/rutaClienteDireccion'));
 app.use('/api/clientetelefonos', require('./rutas/rutaClienteTelefono'));
+
+// Documentacion
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/swagger.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+});
 
 app.listen(app.get('port'), ()=>{
     console.log('Servidor iniciado en el puerto ' + app.get('port'));

@@ -1,5 +1,5 @@
 const ModeloClienteTelefono = require('../modelos/cliente/clientetelefono');
-const { enviar, errores} = require('../configuracion/ayuda');
+const { enviar, errores} = require('../configuraciones/ayuda');
 const { validationResult } = require('express-validator');
 
 exports.inicio = (req, res) => {
