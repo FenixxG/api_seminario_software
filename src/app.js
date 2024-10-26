@@ -45,8 +45,6 @@ app.use(limitador);
 app.use(cors(require('./configuraciones/cors')));
 app.use(express.json());
 
-/*app.set('port', 3001);
-app.use(express.urlencoded({extended: false}));*/
 
 // Definimos Rutas
 //app.use('/api', require('./rutas')); //usando archivo aparte que se encarga solo de las rutas
@@ -65,6 +63,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get('/swagger.json', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(swaggerSpec);
+});
+
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Servidor escuchando en http://localhost:${port}`);
 });
 
 module.exports = app;

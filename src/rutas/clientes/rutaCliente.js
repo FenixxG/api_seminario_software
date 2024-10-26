@@ -233,9 +233,7 @@ rutas.put('/editar',
                     identidad: value
                 }
             });
-            if(buscarCliente){
-                throw new Error('La identidad del cliente ya existe');
-            }
+            
         }
     }),
     body("rtn").isLength({min: 13, max: 16}).withMessage("El rtn debe ser un entero")
@@ -249,9 +247,7 @@ rutas.put('/editar',
                     rtn: value
                 }
             });
-            if(buscarCliente){
-                throw new Error('El rtn del cliente ya existe');
-            }
+            
         }
     }),
     body("primernombre").isLength({ min: 3, max: 50 }).withMessage('El nombre debe tener entre 3 y 50 caracteres')
